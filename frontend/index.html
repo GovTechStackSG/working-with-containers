@@ -6,6 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>govtechstack.sg</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 </head>
 <body>
 
@@ -28,11 +29,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.19.1/URI.min.js" type="text/javascript"></script>
+
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" type="text/javascript"></script>
 <script>
     $(function () {
-        $('#get_random').onclick(function () {
-            $.ajax('//localhost:3000/random', {
+        var uri = URI(window.location);
+
+
+        $('#get_random').click(function () {
+            $.ajax('//' + uri.hostname() + ':3000/random', {
                 success: function (data) {
                     $('#random_string').text(data.random);
                 }

@@ -22,18 +22,18 @@ git clone 'https://github.com/GovTechStackSG/working-with-containers.git'
 ## Pulling an Image from a Registry
 Run the following command to retrieve a Docker image from a registry
 ```bash
-docker image pull centos:latest
+sudo docker image pull centos:latest
 ```
 
 You can list the images you have on your Docker engine by running the following command:
 ```bash
-docker image ls
+sudo docker image ls
 ```
 
 ## Running a Container
 We use the image that we pulled to create a running container. Run the following command to start a Bash shell in a centos container.
 ```bash
-docker container run --tty --interactive --rm --name centos-bash centos:latest bash
+sudo docker container run --tty --interactive --rm --name centos-bash centos:latest bash
 ```
 
 You can do whatever you want in the Bash shell, feel free to alter the contents of your container. Type the `exit` command or
@@ -41,7 +41,7 @@ press CTRL + D to exit the Bash shell.
 
 Let's start the container again:
 ```bash
-docker container run --tty --interactive --rm --name centos-bash centos:latest bash
+sudo docker container run --tty --interactive --rm --name centos-bash centos:latest bash
 ```
 
 Explore the filesystem and see if the changes you have made are still persistent. The container should have reverted to the original
@@ -58,27 +58,27 @@ so the Docker engine will remove the container from the list.
 
 Let's start the container again in detached mode, and run a separate program called `yes`:
 ```bash
-docker container run --detach --rm --name centos-true centos:latest yes
+sudo docker container run --detach --rm --name centos-true centos:latest yes
 ```
 
 Run the following command to list the running containers on your Docker host:
 ```bash
-docker container ps
+sudo docker container ps
 ```
 
 Let's start a second container in detached mode:
 ```bash
-docker container run --detach --rm --name centos-yes2 centos:latest yes
+sudo docker container run --detach --rm --name centos-yes2 centos:latest yes
 ```
 
 List the running containers again, observe the addition of the second container:
 ```bash
-docker container ps
+sudo docker container ps
 ```
 
 Let's attach a Bash shell to one of the running containers. Run the following command to start a Bash shell:
 ```bash
-docker container exec --tty  --interactive centos-true1 bash 
+sudo docker container exec --tty  --interactive centos-true1 bash 
 ``` 
 
 In the Bash Shell, run the following command to list the running processes in the container. Observe that the `yes` program is running in PID 1.
@@ -88,12 +88,12 @@ ps -aux
 
 Let's stop and remove the running containers.
 ```bash
-docker rm --force centos-true centos-true1
+sudo docker rm --force centos-true centos-true1
 ```
 
 ## Creating your own Image
 
-We will now be building a Node.js web application. Our base template for a Node.js web app is located in the ```nodejs-base`` directory`.
+We will now be building a Node.js web application. Our base template for a Node.js web app is located in the ```backend`` directory`.
 
 Let's take a look at the Dockerfile for the web app. The Dockerfile describes to the Docker engine how to build 
 your container image.  
@@ -112,19 +112,19 @@ your container image.
 
 Now that we have covered the basic elements of a Dockerfile, let's build and tag the web app, by running the following command:
 ```bash
-docker image build --tag mywebserver:latest ./nodejs-base
+sudo docker image build --tag backend:latest ./backend
 ``` 
 
 ## Running a web server container
 
 We can run the web application server that we built by running the following command:
 ```bash
-docker container run --detach --publish 3000:3000 --name webserver mywebserver:latest 
+sudo docker container run --detach --publish 3000:3000 --name backend backend:latest 
 ``` 
 
 Let's open a terminal to follow the logs from the web server
 ```bash
-docker container logs --follow mywebserver
+sudo docker container logs --follow backend
 ```
 
 With another terminal, let's try calling the web server:
@@ -136,7 +136,7 @@ Observe the incoming HTTP requests.
 
 To clean up, let's remove the container.
 ```bash
-docker container rm --force webserver
+sudo docker container rm --force webserver
 ```
 
 ## Mounting volumes to a container
@@ -145,8 +145,8 @@ Let's create a static asset web server.
 
 
 ```bash
-docker container run --detach --rm --publish 8080:80 \
---name frontend --volume $(pwd)/static-base:/usr/local/apache2/htdocs:z \
+sudo docker container run --detach --rm --publish 8080:80 \
+--name frontend --volume $(pwd)/frontend:/usr/local/apache2/htdocs:z \
 httpd:latest 
 ``` 
 
@@ -159,7 +159,7 @@ curl "http://localhost:8080"
 
 To clean up, let's remove the container.
 ```bash
-docker container rm --force frontend
+sudo docker container rm --force frontend
 ```
 
 ## Networking containers together
@@ -169,38 +169,38 @@ web servers, two application servers and load balancers for both web and applica
 
 First, we create a network.
 ```bash
-docker network create ha-webservers
+sudo docker network create ha-webservers
 ```
 
 Let's create the front end servers first
 ```bash
 cd /home/vagrant/working-with-containers
 
-docker container run --net ha-webservers --rm --detach --publish 80 --name frontend1 \
---volume $(pwd)/static-base:/usr/local/apache2/htdocs:z \
+sudo docker container run --net ha-webservers --rm --detach --publish 80 --name frontend1 \
+--volume $(pwd)/frontend:/usr/local/apache2/htdocs:z \
 httpd:latest
 
-docker container run --net ha-webservers --rm --detach --publish 80 --name frontend2 \
---volume $(pwd)/static-base:/usr/local/apache2/htdocs:z \
+sudo docker container run --net ha-webservers --rm --detach --publish 80 --name frontend2 \
+--volume $(pwd)/frontend:/usr/local/apache2/htdocs:z \
 httpd:latest
 ```
 
 Let's create the back end servers
 ```bash
-docker container run --net ha-webservers --detach --rm --publish 3000 --name backend1 mywebserver:latest 
+sudo docker container run --net ha-webservers --detach --rm --publish 3000 --name backend1 backend:latest 
 
-docker container run --net ha-webservers --detach --rm --publish 3000 --name backend2 mywebserver:latest 
+sudo docker container run --net ha-webservers --detach --rm --publish 3000 --name backend2 backend:latest 
 ```
 
 Let's create the load balancers
 ```bash
-docker container run --net ha-webservers --detach --publish 8080:8080 --name frontend-lb \
---volume $(pwd)/haproxy:/usr/local/etc/haproxy/cfg:z \
+sudo docker container run --net ha-webservers --detach --publish 8080:8080 --name frontend-lb \
+--volume $(pwd)/lb:/usr/local/etc/haproxy/cfg:z \
 haproxy:latest \
 haproxy -f /usr/local/etc/haproxy/cfg/frontend.cfg
 
-docker container run --net ha-webservers --detach --publish 3000:3000 --name backend-lb \
---volume $(pwd)/haproxy:/usr/local/etc/haproxy/cfg:z \
+sudo docker container run --net ha-webservers --detach --publish 3000:3000 --name backend-lb \
+--volume $(pwd)/lb:/usr/local/etc/haproxy/cfg:z \
 haproxy:latest \
 haproxy -f /usr/local/etc/haproxy/cfg/backend.cfg
 ```
@@ -208,9 +208,9 @@ haproxy -f /usr/local/etc/haproxy/cfg/backend.cfg
 In separate terminals, follow the container logs:
 
 ```bash
-docker container logs --follow backend1
+sudo docker container logs --follow backend1
 
-docker container logs --follow backend2
+sudo docker container logs --follow backend2
 ```
 
 Open your browser and test the front end and backend. Observe that every request to the backend is load-balanced.
@@ -218,8 +218,8 @@ Open your browser and test the front end and backend. Observe that every request
 Cleanup the containers and network.
 
 ```bash
-docker container rm --force frontend1 frontend2 backend1 backend2 frontend-lb backend-lb
-docker network rm ha-webservers
+sudo docker container rm --force frontend1 frontend2 backend1 backend2 frontend-lb backend-lb
+sudo docker network rm ha-webservers
 ```
 
 ## Using Docker Compose
@@ -230,11 +230,11 @@ these parameters in a Docker Compose file. Use your editor to view the docker-co
 Run the following command to bring up the entire stack that we created earlier.
 
 ```bash
-docker-compose up
+sudo docker-compose up
 ```
 
 Run the following command to bring down the stack.
 ```bash
-docker-compose down
+sudo docker-compose down
 ```
 
