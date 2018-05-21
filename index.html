@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>govtechstack.sg - Container Track - Docker Training</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/solarized-light.min.css">
+</head>
+<body>
+
+
+<div class="container">
+    <div id="content">
+
+
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.17/marked.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"
+        type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"
+        type="text/javascript"></script>
+
+
+<script>
+    $(function () {
+        $.get('README.md', function (markdown_src) {
+            var rendered_markdown = marked(markdown_src, {
+                gfm: true,
+                highlight: function (code, lang) {
+                    return hljs.highlight(lang, code).value;
+                }
+            });
+
+            var $rendered_markdown = $(rendered_markdown);
+
+
+            $('#content').html($rendered_markdown);
+
+
+            $('h2').each(function () {
+                var $this = $(this);
+
+                var $content = $this.nextUntil('h2').addBack();
+
+
+                $content.wrapAll('<div class="section card p-3 m-3"></div>');
+
+            });
+
+            $('.section').slice(1).append('<a href="#">Top</a>');
+
+
+            $('pre').each(function () {
+                var $this = $(this);
+
+                $this.addClass('p-2 hljs card m-2');
+
+                $this.after('<button class="btn btn-secondary copy-code" data-clipboard-text="' + $this.text() + '">Copy to clipboard</button>')
+
+            });
+
+            $('table').each(function () {
+                var $this = $(this);
+
+                $this.addClass('table table-striped table-bordered');
+
+            });
+
+            new ClipboardJS('.copy-code');
+
+        });
+    });
+</script>
+
+</body>
+
+</html>

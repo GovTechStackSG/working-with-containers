@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>govtechstack.sg</title>
+</head>
+<body>
+
+
+<div class="container">
+    <div id="content">
+
+        <h1>GovTechStack.SG</h1>
+        My Static Frontend Works
+
+
+        <button id="get_random" class="btn btn-primary">Get Random String</button>
+        <pre id="random_string"></pre>
+
+
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" type="text/javascript"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $('#get_random').onclick(function () {
+            $.ajax('//localhost:3000/random', {
+                success: function (data) {
+                    $('#random_string').text(data.random);
+                }
+            })
+        });
+    })
+</script>
+</body>
+</html>
