@@ -14,12 +14,20 @@
 <div class="container">
     <div id="content">
 
-        <h1>GovTechStack.SG</h1>
-        My Static Frontend Works
+
+        <div class="card m-4">
+            <div class="card-header"><h1>GovTechStack.SG</h1></div>
+            <div class="card-body"><p>My Static Frontend Works</p></div>
+        </div>
 
 
-        <button id="get_random" class="btn btn-primary">Get Random String</button>
-        <pre id="random_string"></pre>
+        <div class="card m-4">
+            <div class="card-body">
+                <button id="get_random" class="btn btn-primary">Get Random String</button>
+                <pre id="random_string" class="pre-scrollable"></pre>
+                <pre id="server"></pre>
+            </div>
+        </div>
 
 
     </div>
@@ -41,7 +49,8 @@
         $('#get_random').click(function () {
             $.ajax('//' + uri.hostname() + ':3000/random', {
                 success: function (data) {
-                    $('#random_string').text(data.random);
+                    $('#random_string').text(data.random.match(/.{1,64}/g).join('\n'));
+                    $('#server').text('Server: ' + data.server);
                 }
             })
         });

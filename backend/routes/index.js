@@ -1,6 +1,6 @@
 const express = require('express');
-const crypto = require("crypto");
-
+const crypto = require('crypto');
+const os = require('os');
 
 var router = express.Router();
 
@@ -12,13 +12,13 @@ router.use(function (req, res, next) {
 });
 
 router.get('/', function (req, res, next) {
-    return res.jsonp({status: 'OK'});
+    return res.jsonp({status: 'OK', server: os.hostname()});
 });
 
 router.get('/random', function (req, res, next) {
 
     var randomBytes = Buffer.from(crypto.randomBytes(1024));
-    return res.jsonp({random: randomBytes.toString('hex')});
+    return res.jsonp({random: randomBytes.toString('hex'), server: os.hostname()});
 });
 
 module.exports = router;
