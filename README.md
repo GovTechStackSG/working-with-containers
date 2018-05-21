@@ -19,6 +19,10 @@ cd /home/vagrant
 git clone 'https://github.com/GovTechStackSG/working-with-containers.git'  
 ```
 
+For convenience, these instructions are also available at the following URL, with a copy-to-clipboard button for each code snippet: 
+
+https://govtechstacksg.github.io/working-with-containers/
+
 ## Pulling an Image from a Registry
 Run the following command to retrieve a Docker image from a registry
 ```bash
