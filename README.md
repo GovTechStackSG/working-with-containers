@@ -62,7 +62,7 @@ so the Docker engine will remove the container from the list.
 
 Let's start the container again in detached mode, and run a separate program called `yes`:
 ```bash
-sudo docker container run --detach --rm --name centos-true centos:latest yes
+sudo docker container run --detach --rm --name centos-yes1 centos:latest yes
 ```
 
 Run the following command to list the running containers on your Docker host:
@@ -82,7 +82,7 @@ sudo docker container ps
 
 Let's attach a Bash shell to one of the running containers. Run the following command to start a Bash shell:
 ```bash
-sudo docker container exec --tty  --interactive centos-true1 bash 
+sudo docker container exec --tty  --interactive centos-yes1 bash 
 ``` 
 
 In the Bash Shell, run the following command to list the running processes in the container. Observe that the `yes` program is running in PID 1.
@@ -92,7 +92,7 @@ ps -aux
 
 Let's stop and remove the running containers.
 ```bash
-sudo docker rm --force centos-true centos-true1
+sudo docker rm --force centos-yes1 centos-yes2
 ```
 
 ## Creating your own Image
