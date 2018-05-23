@@ -140,7 +140,7 @@ Observe the incoming HTTP requests.
 
 To clean up, let's remove the container.
 ```bash
-sudo docker container rm --force webserver
+sudo docker container rm --force backend
 ```
 
 ## Mounting volumes to a container
