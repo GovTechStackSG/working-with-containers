@@ -1,0 +1,78 @@
+
+version: "3"
+services:
+
+  frontend1:
+    image: httpd:latest
+    ports:
+      - 80
+    networks:
+      - ha-webservers
+    container_name: frontend1
+    volumes:
+      - ./frontend:/usr/local/apache2/htdocs:z
+
+  frontend2:
+    image: httpd:latest
+    ports:
+      - 80
+    networks:
+      - ha-webservers
+    container_name: frontend2
+    volumes:
+      - ./frontend:/usr/local/apache2/htdocs:z
+
+  frontend-lb:
+    image: haproxy:latest
+    ports:
+      - 8080:8080
+    networks:
+      - ha-webservers
+    container_name: frontend-lb
+    volumes:
+      - ./lb:/usr/local/etc/haproxy/cfg:z
+    command: "haproxy -f /usr/local/etc/haproxy/cfg/frontend.cfg"
+    depends_on:
+      - frontend1
+      - frontend2
+
+
+  backend1:
+    build: ./backend
+    image: backend:latest
+    ports:
+      - 3000
+    networks:
+      - ha-webservers
+    container_name: backend1
+    volumes:
+      - ./backend:/usr/local/apache2/htdocs:z
+
+  backend2:
+    build: ./backend
+    image: backend:latest
+    ports:
+      - 3000
+    networks:
+      - ha-webservers
+    container_name: backend2
+    volumes:
+      - ./backend:/usr/local/apache2/htdocs:z
+
+  backend-lb:
+    image: haproxy:latest
+    ports:
+      - 3000:3000
+    networks:
+      - ha-webservers
+    container_name: backend-lb
+    volumes:
+      - ./lb:/usr/local/etc/haproxy/cfg:z
+    command: "haproxy -f /usr/local/etc/haproxy/cfg/backend.cfg"
+    depends_on:
+      - backend1
+      - backend2
+
+networks:
+  ha-webservers:
+
