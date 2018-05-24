@@ -234,7 +234,7 @@ these parameters in a Docker Compose file. Use your editor to view the docker-co
 Run the following command to bring up the entire stack that we created earlier.
 
 ```bash
-sudo docker-compose up --detach --build
+sudo docker-compose up -d --build
 ```
 
 Run the following command to bring down the stack.
