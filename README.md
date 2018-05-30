@@ -1,10 +1,13 @@
-# Working with Containers
+# Container Track for govtechstack.sg Workshop 2018
 
-Please click here for the [Working with Containers - Slides](Working%20with%20Containers.pdf).
+Please click here for the [slides](slides.md) used in the Container track for govtechstack.sg Workshop 2018 
+
+## Working with Containers
 
 In this module, we cover working with Containers, using the popular Docker container runtime.
 
-## Learning Objectives
+
+### Learning Objectives
 * [Pulling an Image from a Registry](#pulling-an-image)
 * [Running a Container](#running-a-container)
 * [Creating your own Image](#creating-your-own-image)
@@ -13,7 +16,7 @@ In this module, we cover working with Containers, using the popular Docker conta
 * [Networking containers together](#networking-containers-together)
 * [Using Docker Compose](#using-docker-compose)
 
-## Pull the Git repo for Working with Containers
+### Pull the Git repo for Working with Containers
 For this part of the workshop, we will need some Dockerfiles. Run the following command to retrieve them from our Git Repo.
 You will also find a copy of this instructions in the repo.
 ```bash
@@ -25,7 +28,7 @@ For convenience, these instructions are also available at the following URL, wit
 
 https://govtechstacksg.github.io/working-with-containers/
 
-## Pulling an Image from a Registry
+### Pulling an Image from a Registry
 Run the following command to retrieve a Docker image from a registry
 ```bash
 sudo docker image pull centos:latest
@@ -36,7 +39,7 @@ You can list the images you have on your Docker engine by running the following 
 sudo docker image ls
 ```
 
-## Running a Container
+### Running a Container
 We use the image that we pulled to create a running container. Run the following command to start a Bash shell in a centos container.
 ```bash
 sudo docker container run --tty --interactive --rm --name centos-bash centos:latest bash
@@ -97,7 +100,7 @@ Let's stop and remove the running containers.
 sudo docker rm --force centos-yes1 centos-yes2
 ```
 
-## Creating your own Image
+### Creating your own Image
 
 We will now be building a Node.js web application. Our base template for a Node.js web app is located in the ```backend`` directory`.
 
@@ -121,7 +124,7 @@ Now that we have covered the basic elements of a Dockerfile, let's build and tag
 sudo docker image build --tag backend:latest ./backend
 ``` 
 
-## Running a web server container
+### Running a web server container
 
 We can run the web application server that we built by running the following command:
 ```bash
@@ -145,7 +148,7 @@ To clean up, let's remove the container.
 sudo docker container rm --force backend
 ```
 
-## Mounting volumes to a container
+### Mounting volumes to a container
 
 Let's create a static asset web server.
 
@@ -168,7 +171,7 @@ To clean up, let's remove the container.
 sudo docker container rm --force frontend
 ```
 
-## Networking containers together
+### Networking containers together
 
 We are now going to create your web application stack, complete with load balancers. We are going to create two static 
 web servers, two application servers and load balancers for both web and application servers. 
@@ -228,7 +231,7 @@ sudo docker container rm --force frontend1 frontend2 backend1 backend2 frontend-
 sudo docker network rm ha-webservers
 ```
 
-## Using Docker Compose
+### Using Docker Compose
 
 Up till this point we've been manually specifying all the parameters to the Docker engine. We can also capture all of
 these parameters in a Docker Compose file. Use your editor to view the docker-compose.yaml file.
