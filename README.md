@@ -1,5 +1,7 @@
 # Working with Containers
 
+Please click here for the [Working with Containers - Slides](Working%20with%20Containers.pdf).
+
 In this module, we cover working with Containers, using the popular Docker container runtime.
 
 ## Learning Objectives
