@@ -47,7 +47,7 @@
 
 
         $('#get_random').click(function () {
-            $.ajax('//' + uri.hostname() + ':3000/random', {
+            $.ajax('//' + uri.hostname() + '/random', {
                 success: function (data) {
                     $('#random_string').text(data.random.match(/.{1,64}/g).join('\n'));
                     $('#server').text('Server: ' + data.server);
