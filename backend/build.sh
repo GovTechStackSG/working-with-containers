@@ -1,4 +1,4 @@
 #!/bin/bash -ex
 
-sudo docker image build --tag backend:latest .
+docker image build --tag backend:latest .
 
