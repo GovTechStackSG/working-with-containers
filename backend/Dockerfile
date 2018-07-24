@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 RUN npm install
 
-RUN chgrp 0 /usr/src/app
+RUN chmod -R a+rwX /usr/src/app
 
 EXPOSE 3000
 
